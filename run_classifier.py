@@ -855,6 +855,7 @@ def main(_):
   all_labels = set(all_labels)
   num_labels = len(all_labels)
   encoder.fit(list(all_labels))
+  all_labels = list(encoder.classes_)
 
   if train_examples is not None:
       train_enc_labels = encoder.transform([i.label for i in train_examples])
