@@ -873,7 +873,6 @@ def main(_):
 
 
   if FLAGS.do_train:
-    train_examples = processor.get_train_examples(FLAGS.data_dir)
     num_train_steps = int(
         len(train_examples) / FLAGS.train_batch_size * FLAGS.num_train_epochs)
     num_warmup_steps = int(num_train_steps * FLAGS.warmup_proportion)
@@ -914,7 +913,6 @@ def main(_):
     estimator.train(input_fn=train_input_fn, max_steps=num_train_steps)
 
   if FLAGS.do_eval:
-    eval_examples = processor.get_dev_examples(FLAGS.data_dir)
     num_actual_eval_examples = len(eval_examples)
     if FLAGS.use_tpu:
       # TPU requires a fixed batch size for all batches, therefore the number
@@ -960,7 +958,6 @@ def main(_):
         writer.write("%s = %s\n" % (key, str(result[key])))
 
   if FLAGS.do_predict:
-    predict_examples = processor.get_test_examples(FLAGS.data_dir)
     num_actual_predict_examples = len(predict_examples)
     if FLAGS.use_tpu:
       # TPU requires a fixed batch size for all batches, therefore the number
@@ -996,6 +993,7 @@ def main(_):
       tf.logging.info("***** Predict results *****")
       predict_labels = []
       for (i, prediction) in enumerate(result):
+        print(prediction)
         probabilities = prediction["probabilities"]
         predict_labels += prediction.get("predictions")
         if i >= num_actual_predict_examples:
@@ -1006,9 +1004,9 @@ def main(_):
         writer.write(output_line)
         num_written_lines += 1
       print([e.label for e in predict_examples])
-      gold_truth = encoder.inverse_transform([e.label for e in predict_examples])
+      # gold_truth = encoder.inverse_transform([e.label for e in predict_examples])
       print(predict_labels)
-      predict_labels = encoder.inverse_transform(predict_labels)
+      # predict_labels = encoder.inverse_transform(predict_labels)
       i = 0
       acc = 0
       for e, g, p in zip(predict_examples, gold_truth, predict_labels):
