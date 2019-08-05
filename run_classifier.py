@@ -994,7 +994,7 @@ def main(_):
       tf.logging.info("***** Predict results *****")
       predict_labels = []
       for (i, prediction) in enumerate(result):
-        print(prediction)
+        # print(prediction)
         probabilities = prediction["probabilities"]
         predict_labels += prediction.get("predictions")
         if i >= num_actual_predict_examples:
@@ -1004,10 +1004,10 @@ def main(_):
             for class_probability in probabilities) + "\n"
         writer.write(output_line)
         num_written_lines += 1
-      print([e.label for e in predict_examples])
-      # gold_truth = encoder.inverse_transform([e.label for e in predict_examples])
-      print(predict_labels)
-      # predict_labels = encoder.inverse_transform(predict_labels)
+      # print([e.label for e in predict_examples])
+      gold_truth = encoder.inverse_transform([e.label for e in predict_examples])
+      # print(predict_labels)
+      predict_labels = encoder.inverse_transform(predict_labels)
       i = 0
       acc = 0
       for e, g, p in zip(predict_examples, gold_truth, predict_labels):
