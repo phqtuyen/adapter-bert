@@ -871,6 +871,7 @@ def main(_):
       print(pred_enc_labels)
       for e, l in zip(predict_examples, pred_enc_labels):
           e.label = l
+          print(e.label)
 
 
 
