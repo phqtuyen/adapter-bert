@@ -994,7 +994,7 @@ def main(_):
       tf.logging.info("***** Predict results *****")
       predict_labels = []
       for (i, prediction) in enumerate(result):
-        # print(prediction)
+        print(i, ' ', prediction.get("predictions"))
         probabilities = prediction["probabilities"]
         predict_labels += prediction.get("predictions")
         if i >= num_actual_predict_examples:
