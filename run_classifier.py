@@ -868,6 +868,7 @@ def main(_):
 
   if predict_examples is not None:
       pred_enc_labels = encoder.transform([i.label for i in predict_examples])
+      print(pred_enc_labels)
       for e, l in zip(predict_examples, pred_enc_labels):
           e.label = l
 
