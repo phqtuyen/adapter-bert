@@ -986,7 +986,7 @@ def main(_):
         is_training=False,
         drop_remainder=predict_drop_remainder)
 
-    result = estimator.predict(input_fn=predict_input_fn)
+    result = list(estimator.predict(input_fn=predict_input_fn))
 
     output_predict_file = os.path.join(FLAGS.output_dir, "test_results.tsv")
     with tf.gfile.GFile(output_predict_file, "w") as writer:
