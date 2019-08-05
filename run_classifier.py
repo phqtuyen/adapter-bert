@@ -1012,12 +1012,12 @@ def main(_):
       acc = 0
       for e, g, p in zip(predict_examples, gold_truth, predict_labels):
           i += 1
-          tf.logging.info(f"******* Example {i} *******")
-          tf.logging.info(f"Gold truth {g}")
-          tf.logging.info(f"Prediction: {p}")
+          print(f"******* Example {i} *******")
+          print(f"Gold truth {g}")
+          print(f"Prediction: {p}")
           if g == p:
             acc += 1
-      tf.logging.info(f"Prediction Accuracy {float(acc/len(predict_examples))}")
+      print(f"Prediction Accuracy {float(acc/len(predict_examples))}")
 
     assert num_written_lines == num_actual_predict_examples
 
