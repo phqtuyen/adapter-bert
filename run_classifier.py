@@ -996,7 +996,7 @@ def main(_):
       for (i, prediction) in enumerate(result):
         print(i, ' ', prediction.get("predictions"))
         probabilities = prediction["probabilities"]
-        predict_labels += prediction.get("predictions")
+        predict_labels.append(prediction.get("predictions"))
         if i >= num_actual_predict_examples:
           break
         output_line = "\t".join(
