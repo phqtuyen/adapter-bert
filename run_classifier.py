@@ -972,7 +972,7 @@ def main(_):
         predict_examples.append(PaddingInputExample())
 
     predict_file = os.path.join(FLAGS.output_dir, "predict.tf_record")
-    file_based_convert_examples_to_features(predict_examples, label_list,
+    file_based_convert_examples_to_features(predict_examples, all_labels,
                                             FLAGS.max_seq_length, tokenizer,
                                             predict_file)
 
