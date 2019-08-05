@@ -789,6 +789,7 @@ def main(_):
       "cola": ColaProcessor,
       "mnli": MnliProcessor,
       "mrpc": MrpcProcessor,
+      "ic": ICProcessor
   }
 
   tokenization.validate_case_matches_checkpoint(FLAGS.do_lower_case,
