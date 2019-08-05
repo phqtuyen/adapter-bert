@@ -868,11 +868,8 @@ def main(_):
 
   if predict_examples is not None:
       pred_enc_labels = encoder.transform([i.label for i in predict_examples])
-      print(pred_enc_labels)
       for e, l in zip(predict_examples, pred_enc_labels):
           e.label = l
-          print(e.label)
-
 
 
   if FLAGS.do_train:
@@ -1008,7 +1005,9 @@ def main(_):
             for class_probability in probabilities) + "\n"
         writer.write(output_line)
         num_written_lines += 1
+      print([e.label for e in predict_examples])
       gold_truth = encoder.inverse_transform([e.label for e in predict_examples])
+      print(predict_labels)
       predict_labels = encoder.inverse_transform(predict_labels)
       i = 0
       acc = 0
