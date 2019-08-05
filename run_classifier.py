@@ -1004,9 +1004,9 @@ def main(_):
             for class_probability in probabilities) + "\n"
         writer.write(output_line)
         num_written_lines += 1
-      # print([e.label for e in predict_examples])
+      print([e.label for e in predict_examples])
       gold_truth = encoder.inverse_transform([e.label for e in predict_examples])
-      # print(predict_labels)
+      print(predict_labels)
       predict_labels = encoder.inverse_transform(predict_labels)
       i = 0
       acc = 0
