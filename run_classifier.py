@@ -1017,6 +1017,7 @@ def main(_):
           print("Prediction: ", p)
           if g == p:
             acc += 1
+      print(f"Number of correct prediction {acc}")
       print("Prediction Accuracy ", float(acc/len(predict_examples)))
 
     assert num_written_lines == num_actual_predict_examples
