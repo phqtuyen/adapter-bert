@@ -900,17 +900,17 @@ def main(_):
 
   if FLAGS.do_train:
     train_file = os.path.join(FLAGS.output_dir, "train.tf_record")
-    file_based_convert_examples_to_features(
-        train_examples, all_labels, FLAGS.max_seq_length, tokenizer, train_file)
+    features = convert_examples_to_features(
+        train_examples, all_labels, FLAGS.max_seq_length, tokenizer)
     tf.logging.info("***** Running training *****")
     tf.logging.info("  Num examples = %d", len(train_examples))
     tf.logging.info("  Batch size = %d", FLAGS.train_batch_size)
     tf.logging.info("  Num steps = %d", num_train_steps)
-    train_input_fn = file_based_input_fn_builder(
-        input_file=train_file,
+    train_input_fn = input_fn_builder(
+        features=features,
         seq_length=FLAGS.max_seq_length,
         is_training=True,
-        drop_remainder=True)
+        drop_remainder=False)
     estimator.train(input_fn=train_input_fn, max_steps=num_train_steps)
 
   if FLAGS.do_eval:
@@ -925,8 +925,8 @@ def main(_):
         eval_examples.append(PaddingInputExample())
 
     eval_file = os.path.join(FLAGS.output_dir, "eval.tf_record")
-    file_based_convert_examples_to_features(
-        eval_examples, all_labels, FLAGS.max_seq_length, tokenizer, eval_file)
+    # file_based_convert_examples_to_features(
+    #     eval_examples, all_labels, FLAGS.max_seq_length, tokenizer, eval_file)
 
     tf.logging.info("***** Running evaluation *****")
     tf.logging.info("  Num examples = %d (%d actual, %d padding)",
@@ -943,11 +943,18 @@ def main(_):
       eval_steps = int(len(eval_examples) // FLAGS.eval_batch_size)
 
     eval_drop_remainder = True if FLAGS.use_tpu else False
-    eval_input_fn = file_based_input_fn_builder(
-        input_file=eval_file,
+    features = convert_examples_to_features(
+        eval_examples, all_labels, FLAGS.max_seq_length, tokenizer)
+    eval_input_fn = input_fn_builder(
+        features=features,
         seq_length=FLAGS.max_seq_length,
-        is_training=False,
+        is_training=True,
         drop_remainder=eval_drop_remainder)
+    # eval_input_fn = file_based_input_fn_builder(
+    #     input_file=eval_file,
+    #     seq_length=FLAGS.max_seq_length,
+    #     is_training=False,
+    #     drop_remainder=eval_drop_remainder)
 
     result = estimator.evaluate(input_fn=eval_input_fn, steps=eval_steps)
 
@@ -969,9 +976,9 @@ def main(_):
         predict_examples.append(PaddingInputExample())
 
     predict_file = os.path.join(FLAGS.output_dir, "predict.tf_record")
-    file_based_convert_examples_to_features(predict_examples, all_labels,
-                                            FLAGS.max_seq_length, tokenizer,
-                                            predict_file)
+    # file_based_convert_examples_to_features(predict_examples, all_labels,
+    #                                         FLAGS.max_seq_length, tokenizer,
+    #                                         predict_file)
 
     tf.logging.info("***** Running prediction*****")
     tf.logging.info("  Num examples = %d (%d actual, %d padding)",
@@ -980,12 +987,18 @@ def main(_):
     tf.logging.info("  Batch size = %d", FLAGS.predict_batch_size)
 
     predict_drop_remainder = True if FLAGS.use_tpu else False
-    predict_input_fn = file_based_input_fn_builder(
-        input_file=predict_file,
+    # predict_input_fn = file_based_input_fn_builder(
+    #     input_file=predict_file,
+    #     seq_length=FLAGS.max_seq_length,
+    #     is_training=False,
+    #     drop_remainder=predict_drop_remainder)
+    features = convert_examples_to_features(
+        predict_examples, all_labels, FLAGS.max_seq_length, tokenizer)
+    predict_input_fn = input_fn_builder(
+        features=features,
         seq_length=FLAGS.max_seq_length,
-        is_training=False,
+        is_training=True,
         drop_remainder=predict_drop_remainder)
-
     result = list(estimator.predict(input_fn=predict_input_fn))
 
     output_predict_file = os.path.join(FLAGS.output_dir, "test_results.tsv")
